@@ -63,7 +63,7 @@ namespace Twitter.Data.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind(typeof(ITwitterData)).To(typeof(TwitterData));
+            kernel.Bind<ITwitterData>().To<TwitterData>().InSingletonScope();
         }        
     }
 }
