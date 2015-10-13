@@ -2,12 +2,14 @@
     ViewBag.Title = "All Tweets";
 }
 @using Twitter.App.Models.ViewModels
+@using Twitter.App.HtmlHelpers
 @model IEnumerable<TweetIndexViewModel>
 
 @foreach (var tweet in Model){
     <div class="row">
         <div class="col-md-12 thumbnail">
             <div class="caption">
+                <h2>@Html.ActionLink(tweet.Username, "profile", "Home", new { id = tweet.UserId }, htmlAttributes: null)</h2>
                 <h3>@tweet.SendOn</h3>
                 <p>@tweet.Content</p>
                 @Html.ActionLink("Favourite", "makeFavourite", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-success" })
@@ -19,35 +21,16 @@
         </div>
     </div>
 }
-<nav>
-    <ul class="pagination">
-        @if (ViewBag.page == 1)
-        {
-            <li class="disabled">@Html.ActionLink("<<", "Index", "Home", new { id = ViewBag.page - 1 }, htmlAttributes: null)</li>
-        }
-        else
-        {
-            <li>@Html.ActionLink("<<", "Index", "Home", new { id = ViewBag.page - 1 }, htmlAttributes: null)</li>
-        }
-        
-        @for (int i = 1; i <= ViewBag.pagesCount; i++)
-        {
-            if (i == ViewBag.page)
+@Html.Pagination((int)ViewBag.page, (int)ViewBag.pagesCount, "Index", "Home", "id")
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        <div class="col-md-12 thumbnail">
+            @using (Html.BeginForm("post", "Tweets", FormMethod.Post))
             {
-                <li class="active">@Html.ActionLink(i.ToString(), "Index", "Home", new { id = i }, htmlAttributes: null)</li>
+                @Html.TextArea("content");
+                <input class="btn btn-success" type="submit" value="tweet" />
             }
-            else
-            {
-                <li>@Html.ActionLink(i.ToString(), "Index", "Home", new { id = i }, htmlAttributes: null)</li>
-            }
-        }
-        @if (ViewBag.page == ViewBag.pagesCount)
-        {
-            <li class="disabled">@Html.ActionLink(">>", "Index", "Home", new { id = ViewBag.page + 1 }, htmlAttributes: null)</li>
-        }
-        else
-        {
-            <li>@Html.ActionLink(">>", "Index", "Home", new { id = ViewBag.page + 1 }, htmlAttributes: null)</li>
-        }
-    </ul>
-</nav>
+        </div>
+    </div>
+}

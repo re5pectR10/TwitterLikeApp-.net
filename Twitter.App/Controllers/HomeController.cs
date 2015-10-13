@@ -25,7 +25,16 @@ namespace Twitter.App.Controllers
         public ActionResult Index(int id = 1)
         {
             id--;
-            ViewBag.pagesCount = (int) Math.Ceiling((double)this.Data.Tweets.All().Count() / PAGE_SIZE);
+            var users = this.Data.Users.All().Where(u => u.UserName == User.Identity.Name).Select(u => u.Following.Select(f => f.Id)).FirstOrDefault();
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.pagesCount = (int)Math.Ceiling((double)this.Data.Tweets.All().Where(t => users.Contains(t.UserId)).Count() / PAGE_SIZE);
+            }
+            else
+            {
+                ViewBag.pagesCount = (int) Math.Ceiling((double)this.Data.Tweets.All().Count() / PAGE_SIZE);
+            }
+            
             if (id < 0)
             {
                 id = 0;
@@ -34,13 +43,40 @@ namespace Twitter.App.Controllers
             {
                 id = ViewBag.pagesCount - 1;
             }
-           
-            var tweets = this.Data.Tweets.All().OrderByDescending(t=>t.SendOn).Skip(id*PAGE_SIZE).Take(PAGE_SIZE).Select(TweetIndexViewModel.Create);
+
+            IEnumerable<TweetIndexViewModel> tweets = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                //tweets = this.Data.Users.All().Where(u => u.UserName == User.Identity.Name).Select(u => u.Following.Select(f => f.Tweets.Select(t => new TweetIndexViewModel
+                //{
+                //    Id = t.Id,
+                //    Content = t.Content,
+                //    SendOn = t.SendOn,
+                //    UserId = t.UserId
+                //}))).ToList();
+                
+                tweets = this.Data.Tweets.All().Where(t => users.Contains(t.UserId))
+                    .OrderByDescending(t => t.SendOn)
+                    .Skip(id * PAGE_SIZE)
+                    .Take(PAGE_SIZE)
+                    .Select(TweetIndexViewModel.Create).ToList();
+            }
+            else
+            {
+                tweets = this.Data.Tweets.All().OrderByDescending(t => t.SendOn).Skip(id * PAGE_SIZE).Take(PAGE_SIZE).Select(TweetIndexViewModel.Create).ToList();
+            }
+          
             ViewBag.page = id + 1;
             
             return View(tweets);
         }
 
+        [Authorize]
+        public ActionResult profile(string id)
+        {
+            var user = this.Data.Users.All().Where(u => u.Id == id).Select(UserViewModel.Create).FirstOrDefault();
+            return View(user);
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

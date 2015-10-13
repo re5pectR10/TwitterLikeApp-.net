@@ -14,6 +14,6 @@ namespace Twitter.Data.Contracts
         IRepository<Message> Messages { get; }
         IRepository<Retweeted> Retweets { get; }
         IRepository<Notification> Notifications { get; }
-        Task<int> SaveChangesAsync();
+        int SaveChanges();
     }
 }

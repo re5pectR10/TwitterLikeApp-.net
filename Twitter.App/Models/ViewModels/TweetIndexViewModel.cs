@@ -18,7 +18,8 @@ namespace Twitter.App.Models.ViewModels
                     Id = t.Id,
                     Content = t.Content,
                     SendOn = t.SendOn,
-                    UserId = t.UserId
+                    UserId = t.UserId,
+                    Username = t.User.UserName
                 };
             }
         }
@@ -27,5 +28,6 @@ namespace Twitter.App.Models.ViewModels
         public string Content { get; set; }
         public DateTime SendOn { get; set; }
         public string UserId { get; set; }
+        public string Username { get; set; }
     }
 }

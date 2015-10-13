@@ -36,9 +36,9 @@ namespace Twitter.Data
             return (IRepository<T>)this.repositories[typeof(T)];
         }
 
-        public Task<int> SaveChangesAsync()
+        public int SaveChanges()
         {
-            return this.context.SaveChangesAsync();
+            return this.context.SaveChanges();
         }
 
         public IRepository<Models.ApplicationUser> Users
