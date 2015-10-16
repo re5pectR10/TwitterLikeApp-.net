@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System;
 
 namespace Twitter.App.Models
 {
@@ -12,6 +13,11 @@ namespace Twitter.App.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+        public string Name { get; set; }
+        public string FamilyName { get; set; }
+        public string Address { get; set; }
+        public string Bio { get; set; }
+        public DateTime Joined { get; set; }
     }
 
     public class ManageLoginsViewModel

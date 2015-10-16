@@ -81,4 +81,12 @@
                 }*@
         </dd>
     </dl>
+    @using (Html.BeginForm("edit", "Manage", FormMethod.Post))
+    {
+        @Html.TextBoxFor(u=>u.Name)
+        @Html.TextBoxFor(u => u.FamilyName)
+        @Html.TextBoxFor(u => u.Address)
+        @Html.TextAreaFor(u => u.Bio)
+        <input type="submit" value="Edit" />
+    }
 </div>

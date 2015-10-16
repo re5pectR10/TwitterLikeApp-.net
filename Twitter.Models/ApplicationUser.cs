@@ -42,6 +42,11 @@ namespace Twitter.Models
             return userIdentity;
         }
 
+        public string Name { get; set; }
+        public string FamilyName { get; set; }
+        public string Address { get; set; }
+        public string Bio { get; set; }
+        public DateTime Joined { get; set; }
         public virtual ICollection<Tweet> Tweets { get { return this.tweets; } set { this.tweets = value; } }
         public virtual ICollection<Retweeted> Retweeted { get { return this.retweeted; } set { this.retweeted = value; } }
         public virtual ICollection<ApplicationUser> Followers { get { return this.followers; } set { this.followers = value; } }

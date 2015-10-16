@@ -3,27 +3,37 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Twitter.App.Models;
+using Twitter.Data.Contracts;
+using Twitter.Data;
+using Twitter.App.Models.BindingModels;
 
 namespace Twitter.App.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public ManageController()
+        public ManageController() : this(new TwitterData())
         {
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+            : this(new TwitterData())
         {
             UserManager = userManager;
             SignInManager = signInManager;
+        }
+
+        public ManageController(ITwitterData data) 
+            : base(data) 
+        {
         }
 
         public ApplicationSignInManager SignInManager
@@ -64,17 +74,35 @@ namespace Twitter.App.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var user = this.Data.Users.All().FirstOrDefault(u => u.Id == userId);
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                Address = user.Address,
+                Bio = user.Bio,
+                FamilyName = user.FamilyName,
+                Joined = user.Joined,
+                Name = user.Name
             };
             return View(model);
         }
 
+        public async Task<ActionResult> edit(EditUserProfileBindingModel userInfo)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = await this.Data.Users.All().FirstOrDefaultAsync(u => u.Id == userId);
+            user.Address = userInfo.Address;
+            user.Bio = userInfo.Bio;
+            user.FamilyName = userInfo.FamilyName;
+            user.Name = userInfo.Name;
+
+            this.Data.SaveChanges();
+            return RedirectToAction("Index");
+        }
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]

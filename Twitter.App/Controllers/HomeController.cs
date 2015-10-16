@@ -77,6 +77,7 @@ namespace Twitter.App.Controllers
             var user = this.Data.Users.All().Where(u => u.Id == id).Select(UserViewModel.Create).FirstOrDefault();
             return View(user);
         }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
