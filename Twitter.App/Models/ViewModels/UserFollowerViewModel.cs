@@ -7,15 +7,16 @@ using Twitter.Models;
 
 namespace Twitter.App.Models.ViewModels
 {
-    public class UserViewModel
+    public class UserFollowerViewModel
     {
-        public static Expression<Func<ApplicationUser, UserViewModel>> Create
+        public static Expression<Func<ApplicationUser, UserFollowerViewModel>> Create
         {
             get
             {
-                return u => new UserViewModel
+                return u => new UserFollowerViewModel
                 {
-                    info = new UserInfoViewModel(){
+                    info = new UserInfoViewModel()
+                    {
                         Id = u.Id,
                         favouritesCount = u.FavouriteTweets.Count(),
                         fallowerCount = u.Followers.Count(),
@@ -29,6 +30,6 @@ namespace Twitter.App.Models.ViewModels
 
         public string Id { get; set; }
         public UserInfoViewModel info { get; set; }
-        public IEnumerable<TweetIndexViewModel> tweets { get; set; }
+        public IEnumerable<IndexViewModel> follow { get; set; }
     }
 }

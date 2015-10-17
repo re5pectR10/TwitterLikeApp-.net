@@ -1,0 +1,22 @@
+﻿
+@model Twitter.App.Models.ViewModels.UserViewModel
+
+@{
+    ViewBag.Title = "profile";
+}
+
+@Html.Partial("_UserInfo", Model.info)
+
+<div class="row">
+    @foreach (var tweet in Model.tweets)
+    {
+        <div class="col-md-12 thumbnail">
+            <div class="caption">
+                <h2>@Html.ActionLink(tweet.Username, "profile", "Home", new { id = tweet.UserId }, htmlAttributes: null)</h2>
+                <h3>@tweet.SendOn</h3>
+                <p>@tweet.Content</p>
+            </div>
+        </div>
+    }
+</div>
+

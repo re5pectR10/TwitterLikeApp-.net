@@ -1,0 +1,19 @@
+﻿
+@model Twitter.App.Models.ViewModels.UserInfoViewModel
+
+<h2>@User.Identity.Name profile</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        @Html.ActionLink("Tweets: " + @Model.tweetsCount, "profile", "Users", routeValues: new { id = Model.Id }, htmlAttributes: null)
+    </div>
+    <div class="col-md-3">
+        @Html.ActionLink("Favourites: " + @Model.favouritesCount, "getFavourites", "Users", routeValues: new { id = Model.Id }, htmlAttributes: null)
+    </div>
+    <div class="col-md-3">
+        @Html.ActionLink("Following: " + @Model.fallowingCount, "getFollowing", "Users", routeValues: new { id = Model.Id }, htmlAttributes: null)
+    </div>
+    <div class="col-md-3">
+        @Html.ActionLink("Follower: " + @Model.fallowerCount, "getFollower", "Users", routeValues: new { id = Model.Id }, htmlAttributes: null)
+    </div>
+</div>

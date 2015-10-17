@@ -12,11 +12,14 @@
                 <h2>@Html.ActionLink(tweet.Username, "profile", "Home", new { id = tweet.UserId }, htmlAttributes: null)</h2>
                 <h3>@tweet.SendOn</h3>
                 <p>@tweet.Content</p>
-                @Html.ActionLink("Favourite", "makeFavourite", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-success" })
-                @Html.ActionLink("Retweet", "retweet", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-success" })
-                @Html.ActionLink("Report", "report", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-danger" })
-                @Html.ActionLink("Reply", "reply", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-success" })
-                @Html.ActionLink("Share", "share", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-success" })
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("Favourite", "makeFavourite", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Retweet", "retweet", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Report", "report", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Reply", "getReply", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Share", "share", "Tweets", new { id = tweet.Id }, new { @class = "btn btn-success" })
+                }
             </div>
         </div>
     </div>

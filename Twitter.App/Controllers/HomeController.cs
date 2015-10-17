@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Twitter.App.Models;
 using Twitter.App.Models.ViewModels;
 using Twitter.Data.Contracts;
 
@@ -10,7 +11,7 @@ namespace Twitter.App.Controllers
 {
     public class HomeController : BaseController
     {
-        private const int PAGE_SIZE = 3;
+        private const int PAGE_SIZE = 10;
 
         public HomeController()
             :this(new Twitter.Data.TwitterData())
@@ -41,7 +42,14 @@ namespace Twitter.App.Controllers
             }
             else if (id >= ViewBag.pagesCount)
             {
-                id = ViewBag.pagesCount - 1;
+                if (ViewBag.pagesCount == 0)
+                {
+                    id = 0;
+                }
+                else
+                {
+                    id = ViewBag.pagesCount - 1;
+                }
             }
 
             IEnumerable<TweetIndexViewModel> tweets = null;
@@ -69,27 +77,6 @@ namespace Twitter.App.Controllers
             ViewBag.page = id + 1;
             
             return View(tweets);
-        }
-
-        [Authorize]
-        public ActionResult profile(string id)
-        {
-            var user = this.Data.Users.All().Where(u => u.Id == id).Select(UserViewModel.Create).FirstOrDefault();
-            return View(user);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
     }
 }

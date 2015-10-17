@@ -1,0 +1,39 @@
+﻿@model Twitter.App.Models.ViewModels.TweetDetailsViewModel
+
+@{
+    ViewBag.Title = "Reply";
+}
+
+<h2>Reply</h2>
+
+<div class="row">
+    <div class="col-md-12 thumbnail">
+        <div class="caption">
+            <h2>@Html.ActionLink(Model.Username, "profile", "Home", new { id = Model.UserId }, htmlAttributes: null)</h2>
+            <h3>@Model.SendOn</h3>
+            <p>@Model.Content</p>
+        </div>
+    </div>
+    @foreach (var tweet in Model.ReplyTweets)
+    {
+        <div class="col-md-offset-1 col-md-9 thumbnail">
+            <div class="caption">
+                <h2>@Html.ActionLink(tweet.Username, "profile", "Home", new { id = tweet.UserId }, htmlAttributes: null)</h2>
+                <h3>@tweet.SendOn</h3>
+                <p>@tweet.Content</p>
+            </div>
+        </div>
+    }
+</div>
+<div class="col-md-12 thumbnail">
+    @using (Html.BeginForm("reply", "Tweets", new { id = Model.Id }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.TextArea("content", "");
+        <input class="btn btn-success" type="submit" value="tweet" />
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

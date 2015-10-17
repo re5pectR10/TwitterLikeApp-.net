@@ -1,0 +1,17 @@
+﻿@model Twitter.App.Models.ViewModels.UserFollowerViewModel
+
+@{
+    ViewBag.Title = "profile";
+}
+
+@Html.Partial("_UserInfo", Model.info)
+
+<div class="row">
+    @foreach (var user in Model.follow)
+    {
+        <div>
+            <h2>@Html.ActionLink(user.Name, "profile", "Home", new { id = user.Id }, htmlAttributes: null)</h2>
+        </div>
+    }
+</div>
+

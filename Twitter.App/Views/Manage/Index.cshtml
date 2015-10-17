@@ -83,10 +83,14 @@
     </dl>
     @using (Html.BeginForm("edit", "Manage", FormMethod.Post))
     {
-        @Html.TextBoxFor(u=>u.Name)
-        @Html.TextBoxFor(u => u.FamilyName)
-        @Html.TextBoxFor(u => u.Address)
-        @Html.TextAreaFor(u => u.Bio)
-        <input type="submit" value="Edit" />
+        @Html.LabelFor(u=>u.Name)
+        @Html.TextBoxFor(u => u.Name, new { @class = "form-control" })
+        @Html.LabelFor(u => u.FamilyName)
+        @Html.TextBoxFor(u => u.FamilyName, new { @class = "form-control" })
+        @Html.LabelFor(u => u.Address)
+        @Html.TextBoxFor(u => u.Address, new { @class = "form-control" })
+        @Html.LabelFor(u => u.Bio)
+        @Html.TextAreaFor(u => u.Bio, new { @class = "form-control" })
+        <input class="btn btn-success" type="submit" value="Edit" />
     }
 </div>
